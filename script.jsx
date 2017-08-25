@@ -21,8 +21,7 @@ var TodoItem =React.createClass({
    getDefaultProps: function() {
     return {
         children:'',
-        text:'test',
-        level:10,
+
     };
   },
   render: function(){
