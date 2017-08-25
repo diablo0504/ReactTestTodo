@@ -37,6 +37,8 @@ var TodoItem =React.createClass({
    getDefaultProps: function() {
     return {
         children:'',
+        text:'test',
+        level:10,
     };
   },
   render: function(){
@@ -71,7 +73,32 @@ var TodoList =React.createClass({
     }
 });
 
-
+var TodoSort=React.createClass({
+    getDefaultProps:function(){
+        return{
+           initialSortAsc:false,
+        };
+    },
+    getInitialState:function(){
+        return{
+           sort:this.props.initialSortAsc,
+        };
+    },
+    onClick: function(){
+        this.props.toggleSort();
+        this.setState({sortAsc: !this.state.sortAsc});
+    },
+    render:function(){
+        return(
+            <div style={{ textAlign: 'right' } }>
+               <div className='todo-tr'>
+                    <div className='todo-td'>Now sort: {this.state.sortAsc === true ? '🔼' : '🔽'}</div>
+                    <div className='todo-td'><button type='button' onClick={this.onClick}>ReSort {this.state.sortAsc === true ? '🔽' : '🔼'}</button></div>
+                </div>
+            </div>
+        );
+    }
+});
 
 
 var Todo = React.createClass({
@@ -83,6 +110,7 @@ var Todo = React.createClass({
     getInitialState:function(){
         return{
             data:this.props.initialdata,
+            asc:false,
         };
     },
     addItem:function(text,level){
@@ -92,14 +120,37 @@ var Todo = React.createClass({
           text:text,
           level:level,
     });
-    this.setState({data:newData});
-  },
+        this.sortItem(newData);
+        this.setState({data:newData});
+        
+    },
+    toggleSort: function () {
+        this.state.asc = !this.state.asc;
+        this.sortItem(this.state.data);
+        this.setState({
+            data: this.state.data,
+        })
+
+    },
+    sortItem: function (dataSrc){
+        if (this.state.asc === true) {
+            dataSrc.sort(function (a, b) {
+                return a.level - b.level;
+            });
+        }
+        else if(this.state.asc === false) {
+            dataSrc.sort(function (a, b) {
+                return b.level - a.level;
+            });
+        }
+    },
     render:function(){
       return(
           <div className='todo'>
             
               <div>&nbsp;</div>
               <TodoInput addItem={this.addItem}/>
+              <TodoSort initialSortAsc={this.state.asc} toggleSort={this.toggleSort}/>
               <TodoList data={this.state.data} />
           </div>
       );
@@ -107,8 +158,8 @@ var Todo = React.createClass({
 });
 
 var dataArray = [
-  {id:1  , text:'火龍' ,level:'21'},
-  {id:2  , text:'妙娃' ,level:'33'},
+  {id:1  , text:'火龍' ,level:21 },
+  {id:2  , text:'妙娃' ,level:33 },
 
 ];
 
