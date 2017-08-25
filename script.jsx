@@ -1,20 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var TodoInput =React.createClass({
     onSubmit:function (e) {
     e.preventDefault();
@@ -92,8 +76,7 @@ var TodoSort=React.createClass({
         return(
             <div style={{ textAlign: 'right' } }>
                <div className='todo-tr'>
-                    <div className='todo-td'>Now sort: {this.state.sortAsc === true ? '🔼' : '🔽'}</div>
-                    <div className='todo-td'><button type='button' onClick={this.onClick}>ReSort {this.state.sortAsc === true ? '🔽' : '🔼'}</button></div>
+                    <div className='todo-td'><button type='button' onClick={this.onClick}>排序 {this.state.sortAsc === true ? '▼' : '▲'}</button></div>
                 </div>
             </div>
         );
